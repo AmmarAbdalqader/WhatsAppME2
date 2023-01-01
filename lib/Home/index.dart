@@ -2,7 +2,6 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:whatsappme2/Helpers/Device.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -25,9 +24,10 @@ class _HomeState extends State<Home> {
           });
         },
         initialSelection: 'الأردن',
-        favorite: ['+962', 'الأردن', '+1', 'USA'],
-        showCountryOnly: false,
-        showOnlyCountryWhenClosed: false,
+        // onInit: (x) => ,
+        favorite: ['+962', 'الأردن'],
+        showDropDownButton: true,
+        textStyle: TextStyle(color: Colors.white),
       ),
     );
   }
@@ -39,13 +39,15 @@ class _HomeState extends State<Home> {
         autofocus: true,
         decoration: InputDecoration(
           label: Text("Phone Number"),
+          // labelStyle: TextStyle(color: Colors.white),
           suffixIcon: Icon(Icons.phone),
-          suffixIconColor: Colors.teal,
+          // suffixIconColor: Colors.teal,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: Colors.teal),
           ),
         ),
+        style: TextStyle(color: Colors.white),
         cursorColor: Colors.teal,
         controller: numberCon,
         keyboardType: TextInputType.number,
@@ -57,16 +59,22 @@ class _HomeState extends State<Home> {
   Widget submitButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: Colors.teal,
+          backgroundColor: Colors.teal,
           padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10)),
       onPressed: () async {
-        if (numberCon.text.isNotEmpty && numberCon.text.length == 10) {
-          num = numberCon.text.trim();
-          print("whatsapp://send?phone=${country.toString().split("+")[1]}" +
-              numberCon.text);
+        if (numberCon.text.isNotEmpty &&
+            (numberCon.text.length == 10 || numberCon.text.length == 9)) {
+          num = numberCon.text.length == 10
+              ? numberCon.text.toString().substring(1, 10)
+              : numberCon.text.trim();
+
+          print(num);
+          print(country?.dialCode);
+
           Uri url = Uri.parse(
-              "whatsapp://send?phone=${country.toString().split("+")[1]}" +
-                  numberCon.text);
+              "whatsapp://send?phone=${country?.dialCode.toString().split("+")[1]}" +
+                  num!);
+
           if (await canLaunchUrl(url)) {
             await launchUrl(url);
           } else {
@@ -111,15 +119,12 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Device.width = MediaQuery.of(context).size.width;
-    Device.height = MediaQuery.of(context).size.height;
-    Device.isPhone = MediaQuery.of(context).size.shortestSide < 600;
     return Stack(
       children: [
         Image(
-          image: AssetImage("assets/whatsappbackground.png"),
-          height: Device.height,
-          width: Device.width,
+          image: AssetImage("assets/black.jpg"),
+          height: double.infinity,
+          width: double.infinity,
           fit: BoxFit.cover,
         ),
         Scaffold(

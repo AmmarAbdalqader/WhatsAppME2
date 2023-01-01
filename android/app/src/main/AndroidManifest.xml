@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.whatsappme2">
    <application
-        android:label="whatsappme2"
+        android:label="Easy Chat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
