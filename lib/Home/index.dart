@@ -140,7 +140,7 @@ class _HomeState extends State<Home> {
                     darkMode = !darkMode;
                   });
                 },
-                icon: Icon(Icons.sunny),
+                icon: Icon(darkMode ? Icons.sunny : Icons.dark_mode),
               ),
             ],
           ),
