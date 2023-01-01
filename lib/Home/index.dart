@@ -15,6 +15,8 @@ class _HomeState extends State<Home> {
 
   String? num;
 
+  bool darkMode = true;
+
   Widget countryDropDown() {
     return Expanded(
       child: CountryCodePicker(
@@ -24,10 +26,9 @@ class _HomeState extends State<Home> {
           });
         },
         initialSelection: 'الأردن',
-        // onInit: (x) => ,
         favorite: ['+962', 'الأردن'],
         showDropDownButton: true,
-        textStyle: TextStyle(color: Colors.white),
+        textStyle: TextStyle(color: darkMode ? Colors.white : Colors.black),
       ),
     );
   }
@@ -39,15 +40,13 @@ class _HomeState extends State<Home> {
         autofocus: true,
         decoration: InputDecoration(
           label: Text("Phone Number"),
-          // labelStyle: TextStyle(color: Colors.white),
           suffixIcon: Icon(Icons.phone),
-          // suffixIconColor: Colors.teal,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: Colors.teal),
           ),
         ),
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: darkMode ? Colors.white : Colors.black),
         cursorColor: Colors.teal,
         controller: numberCon,
         keyboardType: TextInputType.number,
@@ -100,7 +99,7 @@ class _HomeState extends State<Home> {
           content: SingleChildScrollView(
             child: ListBody(
               children: [
-                Text('Input a Valid number'),
+                Text('Input a valid number'),
               ],
             ),
           ),
@@ -122,7 +121,8 @@ class _HomeState extends State<Home> {
     return Stack(
       children: [
         Image(
-          image: AssetImage("assets/black.jpg"),
+          image: AssetImage(
+              darkMode ? "assets/black.jpg" : "assets/whatsappbackground.png"),
           height: double.infinity,
           width: double.infinity,
           fit: BoxFit.cover,
@@ -133,6 +133,16 @@ class _HomeState extends State<Home> {
             title: Text('To What\'s App'),
             centerTitle: true,
             backgroundColor: Colors.teal,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    darkMode = !darkMode;
+                  });
+                },
+                icon: Icon(Icons.sunny),
+              ),
+            ],
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
